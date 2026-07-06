@@ -1,4 +1,4 @@
-export const VERSION = "0.1.0";
+export const VERSION = "0.2.0";
 
 export { LoopZeroTUIProvider, defaultTheme, useLoopZeroTheme } from "./theme.js";
 export type { RoleTokens, LoopZeroTheme, LoopZeroThemeOverride } from "./theme.js";
