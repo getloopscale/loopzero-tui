@@ -412,9 +412,9 @@ CHANGELOG.md                   — (NEW) Keep-a-Changelog skeleton + [Unreleased
 
 #### TDD
 ```
-RED:     package_manifest_declares_esm_only_types_first_exports() — asserts type=module, exports single-dot with types-before-default, files=["dist"] (MUST fail: package.json absent)
-RED:     package_manifest_declares_react_as_only_peer_and_ink_as_dependency() — asserts peerDependencies keys == ["react"], dependencies.ink matches ^5
-RED:     package_manifest_declares_apache2_license_and_node20_floor() — asserts license=Apache-2.0, engines.node=">=20", sideEffects=false
+RED:     package_manifest_declares_esm_only_types_first_exports() — expect(pkg.type).toBe("module"); expect(Object.keys(pkg.exports["."])) first key "types" then "default"; expect(pkg.files).toEqual(["dist"]) (MUST fail: package.json absent)
+RED:     package_manifest_declares_react_as_only_peer_and_ink_as_dependency() — expect(Object.keys(pkg.peerDependencies)).toEqual(["react"]); expect(pkg.dependencies.ink).toMatch(/\^5/)
+RED:     package_manifest_declares_apache2_license_and_node20_floor() — expect(pkg.license).toBe("Apache-2.0"); expect(pkg.engines.node).toBe(">=20"); expect(pkg.sideEffects).toBe(false)
 GREEN:   Write package.json satisfying every assertion
 REFACTOR: None expected
 VERIFY:  pnpm vitest run tests/package-manifest.test.ts
@@ -593,10 +593,10 @@ useLoopZeroTheme(): LoopZeroTheme -> useContext(ThemeContext) ?? defaultTheme
 
 #### TDD
 ```
-RED:     use_loopzero_theme_returns_default_tokens_without_provider() — renderHook-style via a probe Ink component; expects defaultTheme.role.user.glyph === "> "
-RED:     provider_passes_custom_theme_to_consumers() — custom assistant glyph "◆ " observed via probe render
-RED:     partial_override_preserves_untouched_token_groups() — override role.user only; assert status.error unchanged AND role.assistant defaults intact
-RED:     empty_theme_override_yields_default_tokens() — <LoopZeroTUIProvider theme={{}}>; probe reads defaultTheme.role.user.glyph (EC-4: empty-but-valid extreme of the merge)
+RED:     use_loopzero_theme_returns_default_tokens_without_provider() — probe Ink component renders the hook value; expect(frame).toContain(defaultTheme.role.user.glyph)
+RED:     provider_passes_custom_theme_to_consumers() — custom assistant glyph; expect(frame).toContain("◆ ")
+RED:     partial_override_preserves_untouched_token_groups() — override role.user only; expect(theme.status.error).toBe(defaultTheme.status.error); expect(theme.role.assistant).toEqual(defaultTheme.role.assistant)
+RED:     empty_theme_override_yields_default_tokens() — <LoopZeroTUIProvider theme={{}}>; expect(theme).toEqual(defaultTheme) (EC-4: empty-but-valid extreme of the merge)
 GREEN:   Implement theme.tsx until all four pass
 REFACTOR: Extract mergeTheme helper only if the inline merge exceeds ~10 lines (KISS)
 VERIFY:  pnpm vitest run src/theme.test.tsx
@@ -688,13 +688,13 @@ output: "> hello" with "> " cyan-colored (ANSI in snapshot), text default color
 
 #### TDD
 ```
-RED:     renders_user_message_with_glyph_prefix() — frame toContain("> ") and toContain("hello")
-RED:     renders_assistant_message_with_glyph_prefix() — frame toContain("✦ ") and content
-RED:     user_and_assistant_frames_match_snapshot_under_forced_color() — toMatchSnapshot() per role inside <Box width={40}>
-RED:     respects_custom_theme_glyph_via_provider() — provider override "◆ " observed in frame
+RED:     renders_user_message_with_glyph_prefix() — expect(frame).toContain("> "); expect(frame).toContain("hello")
+RED:     renders_assistant_message_with_glyph_prefix() — expect(frame).toContain("✦ "); expect(frame).toContain(content)
+RED:     user_and_assistant_frames_match_snapshot_under_forced_color() — expect(frame).toMatchSnapshot() per role inside <Box width={40}>
+RED:     respects_custom_theme_glyph_via_provider() — provider override; expect(frame).toContain("◆ ")
 RED:     no_color_render_contains_text_without_ansi_escapes() — spawn-free: re-render with vitest.stubEnv NO_COLOR=1 + FORCE_COLOR unset; assert no "[" and content present
-RED:     invalid_role_throws_typed_error_with_clear_message() — (EC-1, MUST FIX) render with role="system" as any; expect TypeError with message naming ChatMessage, the invalid value, and the accepted union
-RED:     long_content_wraps_inside_narrow_box_without_crash() — (EC-3) 120-char string in <Box width={20}>; frame non-empty and contains first word
+RED:     invalid_role_throws_typed_error_with_clear_message() — (EC-1, MUST FIX) render with role="system" as any; expect(renderIt).toThrow(TypeError); error message should contain "ChatMessage" naming the invalid value and the accepted union
+RED:     long_content_wraps_inside_narrow_box_without_crash() — (EC-3) 120-char string in <Box width={20}>; expect(frame.length > 0).toBe(true); expect(frame).toContain(firstWord)
 GREEN:   Implement chat-message.tsx (including the 3-line role guard at component entry — rules/error-handling.md § 2 boundary validation) until all pass
 REFACTOR: None expected beyond glyph/color constant extraction into theme defaults (already there)
 VERIFY:  pnpm vitest run src/chat-message.test.tsx
@@ -754,7 +754,7 @@ tests/public-api.integration.test.tsx — (NEW) provider+component via src/index
 
 #### TDD
 ```
-RED:     public_entry_composes_provider_and_message_for_both_roles() — import from '../src/index.js'; render provider(custom user glyph)+2 messages; assert both glyphs + both contents in frame (RED via intentionally-wrong import first, then GREEN with real path)
+RED:     public_entry_composes_provider_and_message_for_both_roles() — import from '../src/index.js'; render provider(custom user glyph)+2 messages; expect(frame).toContain(customGlyph); expect(frame).toContain("✦ "); expect(frame).toContain both contents (RED via intentionally-wrong import first, then GREEN with real path)
 GREEN:   Fix import to ../src/index.js — passes with no production change
 REFACTOR: None expected
 VERIFY:  pnpm vitest run tests/public-api.integration.test.tsx
@@ -863,7 +863,7 @@ main: warmup(); runs = repeat(5, runOnce); writeJSON(aggregate(runs)) unless --s
 
 #### TDD
 ```
-RED:     benchmark_baseline_json_exists_with_statistical_protocol() — parse docs/benchmarks/m0-chat-message-baseline.json; assert measured_runs >= 3, every aggregate value Number.isFinite (EC-2: NaN is typeof number — isFinite is the real oracle), methodology non-empty (MUST fail: file absent)
+RED:     benchmark_baseline_json_exists_with_statistical_protocol() — parse docs/benchmarks/m0-chat-message-baseline.json; expect(baseline.protocol.measured_runs).toBeGreaterThanOrEqual(3) — i.e. assert baseline.protocol.measured_runs >= 3; expect(Number.isFinite(baseline.aggregate.mean_ms_per_frame.std_dev)).toBe(true) (EC-2: NaN is typeof number — isFinite is the real oracle); expect(baseline.methodology.length > 0).toBe(true) (MUST fail: file absent)
 GREEN:   Implement harness WITH the zero-frame guard (EC-2, MUST FIX): if a run captures 0 frames, print a clear error and process.exit(1) — never serialize NaN/Infinity aggregates; run pnpm bench; commit baseline
 REFACTOR: None expected
 VERIFY:  pnpm vitest run tests/bench-baseline.test.ts && pnpm bench --smoke
@@ -918,7 +918,7 @@ package.json       — "example": "tsx examples/basic.tsx" (declared T0.1, verif
 
 #### TDD
 ```
-RED:     (covered by T2.2's integration test — the example mirrors it 1:1; no separate unit test for a demo script, per rules/testing.md § 4 "don't test framework-generated code")
+RED:     Given the example program at examples/basic.tsx When it is run piped (`pnpm example | cat`) Then the output contains both role glyphs and the process exits 0 (behavior covered by T2.2's integration test — the example mirrors it 1:1; no separate unit test for a demo script, per rules/testing.md § 4 "don't test framework-generated code")
 VERIFY:  pnpm example | cat  — exits 0, output contains both glyphs
 ```
 
@@ -984,7 +984,7 @@ TypeScript detectors are enabled.
 
 #### TDD
 ```
-RED:     (infrastructure task — the executable assertion is the CI run itself)
+RED:     Given the workflow file on develop When GitHub Actions runs the push Then all six steps (format:check, lint, typecheck, test, build, bench --smoke) exit 0 on node 20 AND node 22 (infrastructure task — the executable assertion is the CI run itself)
 VERIFY:  gh run watch <run-id> exits with success; all six steps green on both node versions
 ```
 
