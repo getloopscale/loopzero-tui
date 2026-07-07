@@ -1,7 +1,21 @@
 export const VERSION = "0.2.0";
 
-export { LoopZeroTUIProvider, defaultTheme, useLoopZeroTheme } from "./theme.js";
-export type { RoleTokens, LoopZeroTheme, LoopZeroThemeOverride } from "./theme.js";
+export {
+  LoopZeroTUIProvider,
+  defaultTheme,
+  themes,
+  useLoopZeroTheme,
+} from "./theme.js";
+export type {
+  CodeTokens,
+  GlyphToken,
+  RoleTokens,
+  LoopZeroBuiltinThemeName,
+  LoopZeroTheme,
+  LoopZeroThemeOverride,
+  LoopZeroThemeProp,
+  ToolStatusTokens,
+} from "./theme.js";
 
 export { CHAT_ROLES, ChatMessage } from "./chat-message.js";
 export type { ChatMessageProps, ChatRole } from "./chat-message.js";

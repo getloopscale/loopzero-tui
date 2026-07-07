@@ -1,8 +1,13 @@
 import { Text } from "ink";
-import { beforeEach, describe, expect, it } from "vitest";
+import { beforeEach, describe, expect, it, vi } from "vitest";
 
 import { renderFrame } from "../tests/helpers.js";
-import { LoopZeroTUIProvider, defaultTheme, useLoopZeroTheme } from "./theme.js";
+import {
+  LoopZeroTUIProvider,
+  defaultTheme,
+  themes,
+  useLoopZeroTheme,
+} from "./theme.js";
 import type { LoopZeroTheme } from "./theme.js";
 
 let captured: LoopZeroTheme | undefined;
@@ -210,5 +215,211 @@ describe("theme token growth (M6 T1.1)", () => {
     expect(captured?.role.user.glyph).toBe("$ ");
     expect(captured?.status.error).toBe("redBright");
     expect(captured?.role.assistant.glyph).toBe("✦ ");
+  });
+});
+
+// Collects every color-string leaf of a theme (built-in value audits).
+function collectColorStrings(theme: LoopZeroTheme): string[] {
+  const values: string[] = [];
+  for (const role of Object.values(theme.role)) {
+    values.push(role.prefix);
+    if (role.text !== undefined) {
+      values.push(role.text);
+    }
+  }
+  values.push(...Object.values(theme.status));
+  values.push(theme.accent, ...Object.values(theme.code));
+  values.push(
+    theme.toolStatus.pending.color,
+    theme.toolStatus.running.color,
+    theme.toolStatus.success.color,
+    theme.toolStatus.failed.color,
+  );
+  return values;
+}
+
+// M6 T1.2 (plan m6-theme-robustness, ADRs D2/D3/D4): built-ins + union prop
+// + the NO_COLOR swap (OURS — the installed chalk chain has none).
+describe("built-in themes + provider resolution (M6 T1.2)", () => {
+  beforeEach(() => {
+    resetCaptured();
+  });
+
+  it("selects_builtin_by_name", async () => {
+    await renderFrame(
+      <LoopZeroTUIProvider theme="light">
+        <Probe />
+      </LoopZeroTUIProvider>,
+    );
+    expect(captured?.name).toBe("light");
+    expect(captured?.accent).toBe("blue");
+  });
+
+  it("light_theme_is_named_ansi16_only", () => {
+    // D3: no hex in built-ins — hex would fork snapshots between the local
+    // level-1 pin and GH Actions' forced level 3.
+    for (const value of collectColorStrings(themes.light)) {
+      expect(value).not.toMatch(/^#/);
+    }
+  });
+
+  it("no_color_theme_zeroes_colors_keeps_glyphs", () => {
+    const nc = themes["no-color"];
+    expect(nc.status.error).toBe("");
+    expect(nc.accent).toBe("");
+    expect(nc.code.keyword).toBe("");
+    expect(nc.toolStatus.success.glyph).toBe("✓");
+    expect(nc.role.user.glyph).toBe("> ");
+    expect(nc.name).toBe("no-color");
+  });
+
+  it("pair_form_merges_onto_named_base", async () => {
+    await renderFrame(
+      <LoopZeroTUIProvider
+        theme={{ base: "light", override: { accent: "magenta" } }}
+      >
+        <Probe />
+      </LoopZeroTUIProvider>,
+    );
+    expect(captured?.accent).toBe("magenta");
+    expect(captured?.role.user.prefix).toBe(themes.light.role.user.prefix);
+    expect(captured?.name).toBe("custom");
+  });
+
+  it("plain_override_still_merges_onto_dark", async () => {
+    // The M0 degenerate case — base dark.
+    await renderFrame(
+      <LoopZeroTUIProvider theme={{ accent: "magenta" }}>
+        <Probe />
+      </LoopZeroTUIProvider>,
+    );
+    expect(captured?.code.keyword).toBe("blue");
+  });
+
+  it("no_color_env_wins_over_prop", async () => {
+    // In-process — the swap is THEME-layer (gemini test shape); a fresh mount
+    // re-runs the provider memo which reads the env.
+    vi.stubEnv("NO_COLOR", "1");
+    try {
+      await renderFrame(
+        <LoopZeroTUIProvider theme="light">
+          <Probe />
+        </LoopZeroTUIProvider>,
+      );
+      expect(captured?.name).toBe("no-color");
+    } finally {
+      vi.unstubAllEnvs();
+    }
+  });
+
+  it("empty_no_color_env_is_not_set", async () => {
+    // The vitest pin contract (D4): NO_COLOR="" means NOT set.
+    vi.stubEnv("NO_COLOR", "");
+    try {
+      await renderFrame(
+        <LoopZeroTUIProvider theme="light">
+          <Probe />
+        </LoopZeroTUIProvider>,
+      );
+      expect(captured?.name).toBe("light");
+    } finally {
+      vi.unstubAllEnvs();
+    }
+  });
+
+  it("no_color_swap_discards_all_overrides_including_glyphs", async () => {
+    // EC-7: full-swap semantics — glyph overrides revert to the
+    // tested-readable defaults too (documented).
+    vi.stubEnv("NO_COLOR", "1");
+    try {
+      await renderFrame(
+        <LoopZeroTUIProvider theme={{ role: { user: { glyph: "$ " } } }}>
+          <Probe />
+        </LoopZeroTUIProvider>,
+      );
+      expect(captured?.role.user.glyph).toBe("> ");
+    } finally {
+      vi.unstubAllEnvs();
+    }
+  });
+
+  it("unknown_theme_name_throws_typed", () => {
+    const call = () =>
+      LoopZeroTUIProvider({ theme: "solarized" as never, children: null });
+    expect(call).toThrow(TypeError);
+    expect(call).toThrow("unknown theme");
+  });
+
+  it("unknown_pair_key_throws_typed", () => {
+    const call = () =>
+      LoopZeroTUIProvider({
+        theme: { base: "dark", extra: 1 } as never,
+        children: null,
+      });
+    expect(call).toThrow(TypeError);
+    expect(call).toThrow("extra");
+  });
+
+  it("invalid_theme_values_throw_our_typed_error", () => {
+    // EC-5: never the engine's bare `in`-operator error; arrays rejected.
+    for (const bad of [null, 42, []]) {
+      const call = () =>
+        LoopZeroTUIProvider({ theme: bad as never, children: null });
+      expect(call).toThrow(TypeError);
+      expect(call).toThrow("LoopZeroTUIProvider: theme must be");
+    }
+  });
+
+  it("degenerate_forms_pin_name_semantics", async () => {
+    // EC-6: identity is FORM-based, not value-based.
+    await renderFrame(
+      <LoopZeroTUIProvider theme={{ base: "light" }}>
+        <Probe />
+      </LoopZeroTUIProvider>,
+    );
+    expect(captured?.name).toBe("light");
+    expect(captured).toBe(themes.light);
+
+    resetCaptured();
+    await renderFrame(
+      <LoopZeroTUIProvider theme={{ base: "light", override: {} }}>
+        <Probe />
+      </LoopZeroTUIProvider>,
+    );
+    expect(captured?.name).toBe("light");
+    expect(captured).toBe(themes.light);
+
+    resetCaptured();
+    await renderFrame(
+      <LoopZeroTUIProvider theme={{ accent: "cyan" }}>
+        <Probe />
+      </LoopZeroTUIProvider>,
+    );
+    expect(captured?.name).toBe("custom");
+  });
+
+  it("builtin_selection_is_referentially_stable", async () => {
+    const captures: LoopZeroTheme[] = [];
+    function Capture() {
+      captures.push(useLoopZeroTheme());
+      return null;
+    }
+    const { render } = await import("ink-testing-library");
+    const instance = render(
+      <LoopZeroTUIProvider theme="dark">
+        <Capture />
+      </LoopZeroTUIProvider>,
+    );
+    await new Promise((resolve) => setTimeout(resolve, 0));
+    instance.rerender(
+      <LoopZeroTUIProvider theme="dark">
+        <Capture />
+      </LoopZeroTUIProvider>,
+    );
+    await new Promise((resolve) => setTimeout(resolve, 0));
+    instance.unmount();
+    expect(captures.length).toBeGreaterThanOrEqual(2);
+    expect(captures[0]).toBe(captures[captures.length - 1]);
+    expect(captures[0]).toBe(themes.dark);
   });
 });
