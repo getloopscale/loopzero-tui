@@ -5,7 +5,9 @@ import {
   ContextWindowBar,
   LoopZeroTUIProvider,
   ToolCall,
+  themes,
 } from "../src/index.js";
+import type { LoopZeroBuiltinThemeName } from "../src/index.js";
 
 // Theme showcase (plan T3.2 — TTFATT caller for the built-ins): the same
 // scene under the dark and light themes. Static; piped output is clean.
@@ -19,16 +21,23 @@ function Scene() {
   );
 }
 
+// The showcase iterates the PUBLIC `themes` map (review wire-1 — the
+// exported map demoed through the entry, not just the string-name form).
+const showcase: LoopZeroBuiltinThemeName[] = ["dark", "light"];
+
 const instance = render(
   <Box flexDirection="column">
-    <Text bold>dark (default)</Text>
-    <LoopZeroTUIProvider theme="dark">
-      <Scene />
-    </LoopZeroTUIProvider>
-    <Text bold>light</Text>
-    <LoopZeroTUIProvider theme="light">
-      <Scene />
-    </LoopZeroTUIProvider>
+    {showcase.map((name) => (
+      <Box key={name} flexDirection="column">
+        <Text bold>
+          {themes[name].name}
+          {name === "dark" ? " (default)" : ""}
+        </Text>
+        <LoopZeroTUIProvider theme={name}>
+          <Scene />
+        </LoopZeroTUIProvider>
+      </Box>
+    ))}
   </Box>,
 );
 setTimeout(() => {
