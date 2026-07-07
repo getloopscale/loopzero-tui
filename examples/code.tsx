@@ -1,7 +1,11 @@
 import { Box, render } from "ink";
 
-import { CodeBlock, DiffViewer, LoopZeroTUIProvider } from "../src/index.js";
-import { ensureHighlighter } from "../src/code-block.js";
+import {
+  CodeBlock,
+  DiffViewer,
+  LoopZeroTUIProvider,
+  preloadHighlighter,
+} from "../src/index.js";
 
 // Code-surface demo (plan T3.2 — TTFATT caller): a unified diff + a
 // highlighted code block. Non-TTY-safe by design: the scene is static, so
@@ -17,6 +21,7 @@ const patch = [
   "+  return greeting;",
   " }",
   " // callers unchanged",
+  ...Array.from({ length: 8 }, (_, i) => ` trailing-context-${i}`),
   "",
 ].join("\n");
 
@@ -24,12 +29,14 @@ const snippet = ['const result = greet("loopzero");', "console.log(result);"].jo
   "\n",
 );
 
-await ensureHighlighter();
+// Public readiness seam (DV-5): without this await, a one-shot piped render
+// captures the PLAIN first frame — dynamic apps instead see a one-frame pop.
+await preloadHighlighter();
 
 const instance = render(
   <LoopZeroTUIProvider>
     <Box flexDirection="column">
-      <DiffViewer patch={patch} />
+      <DiffViewer patch={patch} contextLines={2} maxLines={12} />
       <CodeBlock code={snippet} language="typescript" showLineNumbers />
     </Box>
   </LoopZeroTUIProvider>,
