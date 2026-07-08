@@ -1,7 +1,13 @@
 import { Box, render, useApp } from "ink";
 import { useEffect, useRef, useState } from "react";
 
-import { ChatComposer, ChatThread, LoopZeroTUIProvider } from "../src/index.js";
+import {
+  ChatComposer,
+  ChatThread,
+  LoopZeroTUIProvider,
+  VERSION,
+  WelcomeBanner,
+} from "../src/index.js";
 import type { ChatThreadMessage } from "../src/index.js";
 
 // Interactive M1 demo (plan T4.2, ADR D8): thread + composer + fake streaming.
@@ -94,7 +100,16 @@ function App() {
   return (
     <LoopZeroTUIProvider>
       <Box flexDirection="column">
-        <ChatThread messages={messages} />
+        <ChatThread
+          header={
+            <WelcomeBanner
+              name="LoopZero TUI"
+              version={VERSION}
+              hints={["/help for commands"]}
+            />
+          }
+          messages={messages}
+        />
         {interactive && (
           <ChatComposer
             placeholder="Type a message (Enter sends, Ctrl+J newline, Ctrl+C quits)"
