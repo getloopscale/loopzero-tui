@@ -98,10 +98,13 @@ describe("sdk drift tripwire (D3)", () => {
       peerDependencies: Record<string, string>;
       devDependencies: Record<string, string>;
     };
+    // M17 T2.1 added react-reconciler to the runtime graph (renderer host);
+    // the sdk stays devDependency-only — that is the invariant this guards.
     expect(Object.keys(pkg.dependencies).sort()).toEqual([
       "ink",
       "ink-spinner",
       "parse-diff",
+      "react-reconciler",
     ]);
     expect(pkg.peerDependencies).not.toHaveProperty("@getloopscale/loopzero-sdk");
     expect(pkg.devDependencies["@getloopscale/loopzero-sdk"]).toMatch(/^\^2\./);
