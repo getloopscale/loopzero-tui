@@ -20,6 +20,9 @@ it(
     });
     expect(out).toContain("inspecting the failing test"); // thinking row
     expect(out).toContain("✓"); // tool success glyph
-    expect(out).toContain("All green now."); // streamed final message
+    expect(out).toContain("All green now.");
+    // M11: timeline header slot in a production caller.
+    expect(out).toContain("LoopZero Stream");
+    expect(out.indexOf("LoopZero Stream")).toBeLessThan(out.indexOf("inspecting")); // streamed final message
   },
 );
