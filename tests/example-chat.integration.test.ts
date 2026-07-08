@@ -21,6 +21,13 @@ describe("examples/chat.tsx (T4.2)", () => {
       expect(out).toContain("✦");
       expect(out).toContain("·");
       expect(out).toContain("appended in place.");
+      // M11: banner in the header slot — present, ABOVE the thread, once.
+      expect(out).toContain("LoopZero TUI");
+      expect(out.indexOf("LoopZero TUI")).toBeLessThan(
+        out.indexOf("appended in place."),
+      );
+      const bannerCount = out.split("LoopZero TUI").length - 1;
+      expect(bannerCount).toBe(1);
     },
   );
 });
