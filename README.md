@@ -78,14 +78,14 @@ See `examples/live-agent-tui.tsx` for a real-LLM turn via OpenRouter.
 
 ## Primitives
 
-| Surface | Components                                                                         |
-| ------- | ---------------------------------------------------------------------------------- |
-| Chat    | `ChatMessage`, `ChatThread` (windowed scrollback), `ChatComposer`                  |
-| Tools   | `ToolCall`, `ToolCallCard`, `ToolResult` (shell envelope, truncation)              |
-| Agent   | `AgentTimeline`, `AgentStreaming`, `useAgentStream` + `agentStreamReducer`         |
-| Code    | `CodeBlock` (optional lowlight), `DiffViewer` + `parseUnifiedDiff`                 |
-| Metrics | `ContextWindowBar`, `TokenUsageChart`, `CostMeter`                                 |
-| Shell   | `WelcomeBanner`, `LoopZeroTUIProvider` + built-in themes (`dark`, `light`, `no-color`) |
+| Surface | Components                                                                                                                                                                |
+| ------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Chat    | `ChatMessage`, `ChatThread` (windowed scrollback), `ChatComposer`                                                                                                         |
+| Tools   | `ToolCall`, `ToolCallCard`, `ToolResult` (shell envelope, truncation)                                                                                                     |
+| Agent   | `AgentTimeline`, `AgentStreaming`, `useAgentStream` + `agentStreamReducer`                                                                                                |
+| Code    | `CodeBlock` (optional lowlight), `DiffViewer` + `parseUnifiedDiff`                                                                                                        |
+| Metrics | `ContextWindowBar`, `TokenUsageChart`, `CostMeter`                                                                                                                        |
+| Shell   | `WelcomeBanner` (optional `animated` < 2 s reveal — TTY-gated, disable with `LOOPZERO_TUI_NO_MOTION=1`), `LoopZeroTUIProvider` + built-in themes (`dark`, `light`, `no-color`) |
 
 Every primitive degrades cleanly under `NO_COLOR`, `TERM=dumb` and bare
 pipes — proven by a subprocess degrade matrix in CI.
