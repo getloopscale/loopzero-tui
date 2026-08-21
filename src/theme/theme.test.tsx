@@ -2,14 +2,8 @@ import { Text } from "ink";
 import { beforeEach, describe, expect, it, vi } from "vitest";
 
 import { renderFrame } from "../../tests/fixtures/helpers.js";
-import {
-  LoopZeroTUIProvider,
-  defaultTheme,
-  isMonochrome,
-  themes,
-  useLoopZeroTheme,
-} from "./theme.js";
 import type { LoopZeroTheme } from "./theme.js";
+import { defaultTheme, isMonochrome, LoopZeroTUIProvider, themes, useLoopZeroTheme } from "./theme.js";
 
 let captured: LoopZeroTheme | undefined;
 
@@ -278,9 +272,7 @@ describe("built-in themes + provider resolution (M6 T1.2)", () => {
 
   it("pair_form_merges_onto_named_base", async () => {
     await renderFrame(
-      <LoopZeroTUIProvider
-        theme={{ base: "light", override: { accent: "magenta" } }}
-      >
+      <LoopZeroTUIProvider theme={{ base: "light", override: { accent: "magenta" } }}>
         <Probe />
       </LoopZeroTUIProvider>,
     );
@@ -347,8 +339,7 @@ describe("built-in themes + provider resolution (M6 T1.2)", () => {
   });
 
   it("unknown_theme_name_throws_typed", () => {
-    const call = () =>
-      LoopZeroTUIProvider({ theme: "solarized" as never, children: null });
+    const call = () => LoopZeroTUIProvider({ theme: "solarized" as never, children: null });
     expect(call).toThrow(TypeError);
     expect(call).toThrow("unknown theme");
   });
@@ -366,8 +357,7 @@ describe("built-in themes + provider resolution (M6 T1.2)", () => {
   it("invalid_theme_values_throw_our_typed_error", () => {
     // EC-5: never the engine's bare `in`-operator error; arrays rejected.
     for (const bad of [null, 42, []]) {
-      const call = () =>
-        LoopZeroTUIProvider({ theme: bad as never, children: null });
+      const call = () => LoopZeroTUIProvider({ theme: bad as never, children: null });
       expect(call).toThrow(TypeError);
       expect(call).toThrow("LoopZeroTUIProvider: theme must be");
     }

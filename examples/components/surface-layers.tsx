@@ -1,10 +1,6 @@
 import { Box, render, Text } from "ink";
 
-import {
-  LoopZeroTUIProvider,
-  selectSurface,
-  type SurfaceLayer,
-} from "../../src/index.js";
+import { type SurfaceLayer, selectSurface, LoopZeroTUIProvider } from "../../src/index.js";
 
 // B-007 example: which surface owns the input row, as a LIST rather than a nested ternary.
 //
