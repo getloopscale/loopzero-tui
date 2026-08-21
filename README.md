@@ -1,3 +1,7 @@
+<p align="center">
+  <img src="./assets/banner.svg" alt="LoopZero TUI — AI-agent primitives for the terminal" width="100%">
+</p>
+
 # @getloopscale/loopzero-tui
 
 **Ship an AI-agent terminal UI in minutes, not weeks.** Streaming chat,
