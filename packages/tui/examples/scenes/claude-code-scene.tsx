@@ -63,6 +63,7 @@ function Scene() {
           name="LoopCode"
           version="0.36.0"
           tagline="Welcome back!"
+          asideDivider
           aside={
             <Box flexDirection="column">
               <Text bold>Tips for getting started</Text>
