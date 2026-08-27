@@ -104,7 +104,7 @@ export interface LoopZeroThemeOverride {
 export const defaultTheme: LoopZeroTheme = Object.freeze({
   name: "dark",
   role: Object.freeze({
-    user: Object.freeze({ glyph: "> ", prefix: "cyan", text: undefined }),
+    user: Object.freeze({ glyph: "❯ ", prefix: "cyan", text: undefined }),
     assistant: Object.freeze({
       glyph: "⏺  ",
       prefix: "magenta",
@@ -150,7 +150,7 @@ const BUILTIN_UNION_MESSAGE = unionMessage(BUILTIN_THEME_NAMES);
 const lightTheme: LoopZeroTheme = Object.freeze({
   name: "light",
   role: Object.freeze({
-    user: Object.freeze({ glyph: "> ", prefix: "blue", text: undefined }),
+    user: Object.freeze({ glyph: "❯ ", prefix: "blue", text: undefined }),
     assistant: Object.freeze({
       glyph: "⏺  ",
       prefix: "magenta",
@@ -184,7 +184,7 @@ const lightTheme: LoopZeroTheme = Object.freeze({
 const noColorTheme: LoopZeroTheme = Object.freeze({
   name: "no-color",
   role: Object.freeze({
-    user: Object.freeze({ glyph: "> ", prefix: "", text: undefined }),
+    user: Object.freeze({ glyph: "❯ ", prefix: "", text: undefined }),
     assistant: Object.freeze({ glyph: "⏺  ", prefix: "", text: undefined }),
     system: Object.freeze({ glyph: "· ", prefix: "", text: undefined }),
   }),
