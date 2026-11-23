@@ -6,6 +6,8 @@ export type {
   CodeTokens,
   GlyphToken,
   RoleTokens,
+  ThemeController,
+  ThemePersistence,
   LoopZeroBuiltinThemeName,
   LoopZeroTheme,
   LoopZeroThemeOverride,
@@ -13,7 +15,9 @@ export type {
   ToolStatusTokens,
 } from "./theme.js";
 export {
+  createThemeController,
   defaultTheme,
+  resolveThemeFromEnv,
   LoopZeroTUIProvider,
   themes,
   useLoopZeroTheme,
