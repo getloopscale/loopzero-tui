@@ -11,6 +11,7 @@ versionamento: [Semantic Versioning](https://semver.org/lang/pt-BR/).
 
 ### Added
 
+- tui: `toolFormatters(toolPresentation(...))` returns the `{ formatToolHeader, formatToolResult }` pair `messagesToAgentEvents` takes, so a tool's header and body render as its presentation describes them, aliases included (#295)
 - tui: `AgentSession`, a ready-made agent session screen (transcript, composer, streaming indicator, footer): takes a per-message `stream(message, signal)`, a slash `commands` registry and `renderItem` / `renderFooter` overrides; Esc interrupts a running turn and messages sent meanwhile are queued and sent in order. `AgentTimeline` gains `renderItem` (#296)
 - tui: `fromAgentOutputEvents` adapts the presenter's `AgentOutputEvent` to `AgentStreamEvent` (type-only presenter dependency), and `useAgentTimeline(agent, { prefix, windowMs, formatToolHeader })` returns the coalesced timeline events and last usage of a `useAgent()` client (#267)
 - tui: `createThemeController({ initial, persist? })` (`get`/`set`/`subscribe`) accepted by `<LoopZeroTUIProvider controller>` to switch and remember a theme at runtime, and `resolveThemeFromEnv(env)` for the `NO_COLOR` / `TERM=dumb` precedence (#271)
@@ -20,6 +21,7 @@ versionamento: [Semantic Versioning](https://semver.org/lang/pt-BR/).
 
 ### Changed
 
+- The packages in this repository are published under the `@getloopscale` scope as `@getloopscale/loopzero-<name>`, following the framework's new name, LoopZero. Imports, `LOOPZERO_*` environment variables, the `.loopzero/` directory and exported symbols carry the new name, and nothing answers to the previous one. Update every import and script when upgrading.
 - tui: `createThemeController({ initial })` and `ThemeController.set(theme)` accept every form of the provider's `theme` prop (name, `{ base, override }`, plain override), validated like the prop; **BREAKING (types):** `ThemeController.get()` now returns `LoopZeroThemeProp` instead of `LoopZeroBuiltinThemeName`, so callers that used it as a name must narrow. Only names are persisted; a theme object is not written (#294)
 - tui: explored grouping now matches the tool's original name, so `formatToolHeader` (incl. `defaultToolHeader`) relabels calls inside an explored block instead of splitting it; a formatter opts a call out with `explore: false` rather than by renaming (#268)
 
