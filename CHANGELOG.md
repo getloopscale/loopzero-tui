@@ -21,6 +21,7 @@ versionamento: [Semantic Versioning](https://semver.org/lang/pt-BR/).
 
 ### Changed
 
+- The packages in this repository are published under the `@getloopscale` scope as `@getloopscale/loopzero-<name>`, following the framework's new name, LoopZero. Imports, `LOOPZERO_*` environment variables, the `.loopzero/` directory and exported symbols carry the new name, and nothing answers to the previous one. Update every import and script when upgrading.
 - tui: `createThemeController({ initial })` and `ThemeController.set(theme)` accept every form of the provider's `theme` prop (name, `{ base, override }`, plain override), validated like the prop; **BREAKING (types):** `ThemeController.get()` now returns `LoopZeroThemeProp` instead of `LoopZeroBuiltinThemeName`, so callers that used it as a name must narrow. Only names are persisted; a theme object is not written (#294)
 - tui: explored grouping now matches the tool's original name, so `formatToolHeader` (incl. `defaultToolHeader`) relabels calls inside an explored block instead of splitting it; a formatter opts a call out with `explore: false` rather than by renaming (#268)
 

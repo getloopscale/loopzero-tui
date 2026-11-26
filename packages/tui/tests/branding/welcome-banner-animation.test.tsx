@@ -213,8 +213,8 @@ describe("WelcomeBanner animated reveal (M12)", () => {
       vi.advanceTimersByTime(4 * TICK);
     });
     const frame = instance.lastFrame() ?? "";
-    // phase 4/12 of "LoopZero TUI" (8 chars) ⇒ ceil(8·4/12) = 3 chars shown.
-    expect(frame).toContain("The");
+    // phase 4/12 of "LoopZero TUI" (12 chars) ⇒ ceil(12·4/12) = 4 chars shown.
+    expect(frame).toContain("Loop");
     expect(frame).not.toContain("LoopZero TUI");
     expect(frame).toMatchSnapshot("banner-mid-reveal");
     instance.unmount();
