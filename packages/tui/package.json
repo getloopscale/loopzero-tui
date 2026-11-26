@@ -1,6 +1,6 @@
 {
   "name": "@getloopscale/loopzero-tui",
-  "version": "0.83.4",
+  "version": "0.1.0",
   "description": "AI-native TUI primitives for agent CLIs — streaming chat, tool cards, diffs, agent timeline and metrics, built on Ink (React for the terminal)",
   "license": "Apache-2.0",
   "repository": {
@@ -68,7 +68,7 @@
     "depcruise": "depcruise src tests --config ../../.dependency-cruiser.cjs"
   },
   "peerDependencies": {
-    "@getloopscale/loopzero-presenter": "^0.18.0",
+    "@getloopscale/loopzero-presenter": ">=0.1.0 <1.0.0",
     "figlet": "^1.7.0",
     "lowlight": "^3.0.0",
     "react": "^19.2.0"
@@ -90,8 +90,8 @@
     "yoga-layout": "3.2.1"
   },
   "devDependencies": {
-    "@getloopscale/loopzero-presenter": "^0.18.0",
-    "@getloopscale/loopzero-sdk": "^2.19.0",
+    "@getloopscale/loopzero-presenter": "^0.1.0",
+    "@getloopscale/loopzero-sdk": "^0.1.0",
     "@types/node": "^22.20.0",
     "@types/react": "^19.2.17",
     "@types/react-reconciler": "^0.33.0",

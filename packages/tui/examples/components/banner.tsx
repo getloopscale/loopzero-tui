@@ -14,22 +14,24 @@ import {
 // the < 2 s reveal on an interactive terminal; piped runs stay on the static path.
 //
 // M27 <Banner> banner layout (piped, `pnpm example:banner | cat`) — figlet
-// "Standard" rendering of "LoopZero" (T-h-e-o; the `e` keeps its `__/` crossbar):
-//    _____ _
-//   |_   _| |__   ___  ___
-//     | | | '_ \ / _ \/ _ \
-//     | | | | | |  __/ (_) |
-//     |_| |_| |_|\___|\___/
+// "Standard" rendering of "LoopZero":
+//    _                     _____
+//   | |    ___   ___  _ __|__  /___ _ __ ___
+//   | |   / _ \ / _ \| '_ \ / // _ \ '__/ _ \
+//   | |__| (_) | (_) | |_) / /|  __/ | | (_) |
+//   |_____\___/ \___/| .__/____\___|_|  \___/
+//                    |_|
 //  ╭────────────────────────────╮
 //  │ model loopzero-demo-1           │
 //  │ cwd   ~/projects/app        │
 //  ╰────────────────────────────╯
 const LOOPZERO_ART = [
-  "  _____ _",
-  " |_   _| |__   ___  ___",
-  "   | | | '_ \\ / _ \\/ _ \\",
-  "   | | | | | |  __/ (_) |",
-  "   |_| |_| |_|\\___|\\___/",
+  "  _                     _____",
+  " | |    ___   ___  _ __|__  /___ _ __ ___",
+  " | |   / _ \\ / _ \\| '_ \\ / // _ \\ '__/ _ \\",
+  " | |__| (_) | (_) | |_) / /|  __/ | | (_) |",
+  " |_____\\___/ \\___/| .__/____\\___|_|  \\___/",
+  "                  |_|",
 ].join("\n");
 
 // The real integration pattern: generate the art from text via the OPTIONAL

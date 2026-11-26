@@ -75,11 +75,11 @@ importers:
         version: 3.2.1
     devDependencies:
       '@getloopscale/loopzero-presenter':
-        specifier: ^0.18.0
-        version: 0.18.0(@getloopscale/loopzero-sdk@2.19.0(ws@8.21.0)(zod@4.4.3))(zod@4.4.3)
+        specifier: ^0.1.0
+        version: 0.1.0(@getloopscale/loopzero-sdk@0.1.0(ws@8.21.0))(zod@4.4.3)
       '@getloopscale/loopzero-sdk':
-        specifier: ^2.19.0
-        version: 2.19.0(ws@8.21.0)(zod@4.4.3)
+        specifier: ^0.1.0
+        version: 0.1.0(ws@8.21.0)
       '@types/node':
         specifier: ^22.20.0
         version: 22.20.0
@@ -385,6 +385,69 @@ packages:
     engines: {node: '>=18'}
     cpu: [x64]
     os: [win32]
+
+  '@getloopscale/loopzero-presenter@0.1.0':
+    resolution: {integrity: sha512-hAukVZgGjqAn5UQArs2d7gxU0R4HySfOzJZebwgdYgM/Qet2aq0/FVtM1yAGfAT3Xm6vs7visp5uxJMjATs5nQ==}
+    engines: {node: '>=22.12.0'}
+    peerDependencies:
+      '@getloopscale/loopzero-sdk': '>=0.1.0 <1.0.0'
+      zod: ^4.0.0
+    peerDependenciesMeta:
+      '@getloopscale/loopzero-sdk':
+        optional: true
+      zod:
+        optional: true
+
+  '@getloopscale/loopzero-sdk@0.1.0':
+    resolution: {integrity: sha512-KsNmQpVMQDhCXFdFj8JnAESEquKGNgMOZyWAxwCgwhc+OpZx6JiguJweu88GWjvL3diIsHJDPBpWA51DBdaOJA==}
+    engines: {node: '>=22.12.0'}
+    peerDependencies:
+      '@lancedb/lancedb': ^0.30.0
+      '@opentelemetry/api': ^1.9.0
+      '@opentelemetry/exporter-metrics-otlp-http': ^0.223.0
+      '@opentelemetry/exporter-prometheus': ^0.223.0
+      '@opentelemetry/exporter-trace-otlp-http': ^0.223.0
+      '@opentelemetry/resources': ^2.0.0
+      '@opentelemetry/sdk-logs': ^0.223.0
+      '@opentelemetry/sdk-metrics': ^2.0.0
+      '@opentelemetry/sdk-trace-base': ^2.0.0
+      '@types/ws': '>=8.0.0'
+      better-sqlite3: ^12.0.0
+      onnxruntime-node: '>=1.17.0'
+      proper-lockfile: ^4.1.2
+      sqlite-vec: ^0.1.0
+      ws: '>=8.0.0'
+    peerDependenciesMeta:
+      '@lancedb/lancedb':
+        optional: true
+      '@opentelemetry/api':
+        optional: true
+      '@opentelemetry/exporter-metrics-otlp-http':
+        optional: true
+      '@opentelemetry/exporter-prometheus':
+        optional: true
+      '@opentelemetry/exporter-trace-otlp-http':
+        optional: true
+      '@opentelemetry/resources':
+        optional: true
+      '@opentelemetry/sdk-logs':
+        optional: true
+      '@opentelemetry/sdk-metrics':
+        optional: true
+      '@opentelemetry/sdk-trace-base':
+        optional: true
+      '@types/ws':
+        optional: true
+      better-sqlite3:
+        optional: true
+      onnxruntime-node:
+        optional: true
+      proper-lockfile:
+        optional: true
+      sqlite-vec:
+        optional: true
+      ws:
+        optional: true
 
   '@isaacs/cliui@8.0.2':
     resolution: {integrity: sha512-O8jcjabXaleOG9DQ0+ARXWZBTfnP4WNAqzuiJK7ll44AmxGKv/J2M4TPjxjY3znBCfvBXFzucm1twdyFybFqEA==}
@@ -805,46 +868,6 @@ packages:
     resolution: {integrity: sha512-BfzEnDJOt9T8M989/lA37EcJgat01wLRnoi5dQf3QzOH7jzpqTAzdDbVfRljVr5r+jzKqpbHeyOfAaXxAd0PAA==}
     cpu: [x64]
     os: [win32]
-
-  '@getloopscale/loopzero-presenter@0.18.0':
-    resolution: {integrity: sha512-3aVDhtFM9MXKEbw3/i4mXBE/rdyoWAIfQTULO81p0+KrzFGUkkijqlofQaMZsphUcYkbgjBixz9am712sKiqpw==}
-    engines: {node: '>=22.12.0'}
-    peerDependencies:
-      '@getloopscale/loopzero-sdk': '>=5.3.0 <10'
-      zod: ^4.0.0
-    peerDependenciesMeta:
-      '@getloopscale/loopzero-sdk':
-        optional: true
-      zod:
-        optional: true
-
-  '@getloopscale/loopzero-sdk@2.19.0':
-    resolution: {integrity: sha512-gUqvNQRIWQIpG9KliuQnL67+b9ryl386YE9qibNUKFNSJs/9YUGOPYOQ4hKvbyuWRDMBTPOY/jehCBRcwWyayw==}
-    engines: {node: '>=22.12.0'}
-    hasBin: true
-    peerDependencies:
-      '@lancedb/lancedb': ^0.30.0
-      '@types/ws': '>=8.0.0'
-      better-sqlite3: ^12.0.0
-      proper-lockfile: ^4.1.2
-      sqlite-vec: ^0.1.0
-      ws: '>=8.0.0'
-      zod: ^4.0.0
-    peerDependenciesMeta:
-      '@lancedb/lancedb':
-        optional: true
-      '@types/ws':
-        optional: true
-      better-sqlite3:
-        optional: true
-      proper-lockfile:
-        optional: true
-      sqlite-vec:
-        optional: true
-      ws:
-        optional: true
-      zod:
-        optional: true
 
   '@turbo/darwin-64@2.10.11':
     resolution: {integrity: sha512-v3R+1R/Ysozyo+p7Ri8MCIbndOvYt3DgPFrGLhrhQHfvyvbxyH3WyJj+A/2JTNmNleuAlh3JUyCV0iSVHIONTA==}
@@ -2300,6 +2323,22 @@ snapshots:
   '@esbuild/win32-x64@0.28.1':
     optional: true
 
+  '@getloopscale/loopzero-presenter@0.1.0(@getloopscale/loopzero-sdk@0.1.0(ws@8.21.0))(zod@4.4.3)':
+    dependencies:
+      diff: 8.0.4
+      parse-diff: 0.12.0
+    optionalDependencies:
+      '@getloopscale/loopzero-sdk': 0.1.0(ws@8.21.0)
+      zod: 4.4.3
+
+  '@getloopscale/loopzero-sdk@0.1.0(ws@8.21.0)':
+    dependencies:
+      croner: 9.1.0
+      jsonrepair: 3.15.0
+      zod: 4.4.3
+    optionalDependencies:
+      ws: 8.21.0
+
   '@isaacs/cliui@8.0.2':
     dependencies:
       string-width: 5.1.2
@@ -2553,22 +2592,6 @@ snapshots:
 
   '@rollup/rollup-win32-x64-msvc@4.62.2':
     optional: true
-
-  '@getloopscale/loopzero-presenter@0.18.0(@getloopscale/loopzero-sdk@2.19.0(ws@8.21.0)(zod@4.4.3))(zod@4.4.3)':
-    dependencies:
-      diff: 8.0.4
-      parse-diff: 0.12.0
-    optionalDependencies:
-      '@getloopscale/loopzero-sdk': 2.19.0(ws@8.21.0)(zod@4.4.3)
-      zod: 4.4.3
-
-  '@getloopscale/loopzero-sdk@2.19.0(ws@8.21.0)(zod@4.4.3)':
-    dependencies:
-      croner: 9.1.0
-      jsonrepair: 3.15.0
-    optionalDependencies:
-      ws: 8.21.0
-      zod: 4.4.3
 
   '@turbo/darwin-64@2.10.11':
     optional: true

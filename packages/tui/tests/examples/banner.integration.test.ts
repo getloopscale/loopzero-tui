@@ -31,9 +31,8 @@ it("banner_example_renders_and_exits_cleanly_when_piped", { timeout: 30000 }, ()
   expect(once).toBe(1);
   expect(out).toContain("/help for commands");
   // M27: the <Banner> banner layout — the ASCII art + the framed status panel.
-  // `\___|\___/` is the figlet "LoopZero" e+o bottom row — the `\___|` proves the
-  // `e` (with its crossbar), i.e. the art reads "LoopZero", not "Thoo".
-  expect(out).toContain("\\___|\\___/");
+  // `| .__/____\___|_|` is the figlet "LoopZero" baseline row, where the `p` meets the `Z`.
+  expect(out).toContain("| .__/____\\___|_|");
   expect(out).toContain("model");
   expect(out).toContain("loopzero-demo-1");
 });

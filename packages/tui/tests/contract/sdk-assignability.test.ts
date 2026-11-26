@@ -117,6 +117,6 @@ describe("sdk drift tripwire (D3)", () => {
       "yoga-layout",
     ]);
     expect(pkg.peerDependencies).not.toHaveProperty("@getloopscale/loopzero-sdk");
-    expect(pkg.devDependencies["@getloopscale/loopzero-sdk"]).toMatch(/^\^2\./);
+    expect(pkg.devDependencies["@getloopscale/loopzero-sdk"]).toMatch(/^\^0\.1\./);
   });
 });
