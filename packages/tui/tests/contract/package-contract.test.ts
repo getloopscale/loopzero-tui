@@ -116,7 +116,7 @@ describe("TTFATT record (M8 T2.2)", () => {
 
 // SUNSET: migration-window guard — retire (or re-base) at the 0.12.0 cut;
 // legitimate it.each refactors after M10 should re-base M10_BASE instead.
-const M10_BASE = "035ae09";
+const M10_BASE = "5b349f4";
 
 // Deliberate renames since M10, kept explicit rather than inferred: an
 // UNLISTED disappearance still fails, which is the whole point of the guard.
@@ -294,7 +294,7 @@ describe("platform coherence (M10 T2.3)", () => {
 
 describe("snapshot re-record review guard (M10 T1.4)", () => {
   it("rerecorded_snapshots_all_reviewed", (ctx) => {
-    const M10_BASE = "035ae09";
+    const M10_BASE = "5b349f4";
     // The review table lives under `.claude/`, which this repository does not track. So the guard
     // only has something to check on a machine carrying that local install, and threw ENOENT
     // everywhere else — including on a clean CI checkout, and inside `prepublishOnly`, which made
